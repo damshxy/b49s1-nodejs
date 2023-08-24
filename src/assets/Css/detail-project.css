@@ -1,0 +1,88 @@
+.detail-project {
+    margin: 90px auto;
+    padding: 30px;
+}
+
+.detail-project h1 {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.detail-project .detail {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.detail-project .detail .left {
+    margin: 0 40px;
+}
+
+.detail-project .detail .left img {
+    height: 450px;
+    width: 650px;
+}
+
+.detail-project .detail .right {
+    margin-top: 90px;
+}
+
+.detail-project .detail .right .duration h4, .technologies h4 {
+    font-size: 20px;
+}
+
+.detail-project .detail .right .duration .duration-content .date {
+    display: flex;
+    margin-top: 10px;
+    gap: 20px;
+}
+
+.detail-project .detail .right .duration .duration-content .duration-time {
+    display: flex;
+    margin: 12px auto;
+    gap: 20px;
+}
+
+.detail-project .detail .right .duration .duration-content .date i, .duration-time i {
+    font-size: 20px;
+}
+
+.detail-project .detail .right .technologies .tech1 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.detail-project .detail .right .technologies .tech1 i {
+    font-size: 20px;
+}
+
+.detail-project .detail .right .technologies .tech2 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.detail-project .detail .right .technologies .tech2 i {
+    font-size: 20px;
+}
+
+.container-content {
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    margin: 90px auto;
+    padding: 90px;
+}
+
+@media only screen and (max-width: 1350px) {
+    #btn-barsMenu {
+        display: block;
+        cursor: pointer;
+    }
+
+    .item-collapse {
+        display: none;
+    }
+}

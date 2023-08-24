@@ -1,0 +1,118 @@
+.container {
+    margin: 60px auto;
+    justify-content: center;
+    text-align: center;
+    font-size: 20px;
+}
+
+.testimonials {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.card-testimonial {
+    margin: 80px auto;
+    padding: 30px;
+    width: 550px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #cecece;
+}
+
+.testimonials .card-testimonial .image-testimonial img {
+    border-radius: 8px;
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    object-position: 0 40%;
+}
+
+.testimonials .card-testimonial .desc-testimonial {
+    margin-top: 20px;
+    font-style: italic;
+}
+
+.testimonials .card-testimonial .author-testimonial {
+    margin-top: 20px;
+    text-align: end;
+}
+
+.container-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-rating > h2 {
+    margin-top: 20px;
+}
+
+.rating-btn {
+    margin: 20px;
+    padding: 0px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: black;
+    color: white !important;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+}
+
+.rating-btn i {
+    color: white !important;
+}
+
+.stars-rating {
+    margin-top: 15px;
+    text-align: end;
+}
+
+@media only screen and (max-width: 1350px) {
+    #btn-barsMenu {
+        display: block;
+        cursor: pointer;
+    }
+
+    .item-collapse {
+        display: none;
+    }
+
+    .testimonials {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 1em;
+        position: relative;
+    }
+
+    .testimonials .card-testimonial {
+        display: flex;
+        flex-direction: column;
+        margin: 40px auto;
+        padding: 10px;
+        width: 450px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px #cecece;
+    }
+}
+
+@media only screen and (max-width: 820px) {
+    .testimonials {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        column-gap: 1em;
+        position: relative;
+    }
+
+    .testimonials .card-testimonial {
+        display: flex;
+        flex-direction: column;
+        margin: 40px auto;
+        padding: 10px;
+        width: 600px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px #cecece;
+    }
+}

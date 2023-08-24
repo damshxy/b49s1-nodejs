@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/Css/all.css" />
+    <link rel="stylesheet" href="/Css/nav.css" />
+    <link rel="stylesheet" href="/Css/myProject.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>My Project</title>
+  </head>
+  <body>
+ <!-- Navbar -->
+ <nav class="navbar">
+  <div class="nav-left d-flex mt-2">
+    <ul>
+      <li class="nav-item">
+        <a class="nav-brand" href="/">
+          <img src="image/logo.png" alt="Logo" />
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/" class="nav-link item-collapse">Home</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link item-collapse active">Add Project</a>
+      </li>
+      <li class="nav-item">
+        <a href="/testimonial" class="nav-link item-collapse">Testimonial</a>
+      </li>
+    </ul>
+    <form class="nav-right nav-item item-collapse">
+      <a href="/contact" class="btn">Contact Me</a>
+    </form>
+  </div>
+  <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+</nav>
+
+<div class="hamburger-nav-container" id="hamburger-nav-container">
+  <a href="/" class="hamburger-active">Home</a>
+  <a href="/add-project">Add Project</a>
+  <a href="/testimonial">Testimonial</a>
+  <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
+</div>
+<!-- End Of Navbar -->
+
+    <!-- Added Project -->
+    <section>
+      <div class="added-project-container">
+        <div class="added-project-form">
+          <div class="form-added">
+            <form action="/add-project" method="post">
+              <h1>ADD MY PROJECT</h1>
+              <div class="project-name">
+                <label for="inputProject">Project Name</label>
+                <input class="form-control" type="text" id="inputProject" name="inputProject"/>
+              </div>
+              <div class="date">
+                <!-- Input Start Date -->
+                <div class="input-start-date">
+                  <label for="inputStartDate">Start Date</label>
+                  <input class="form-control" type="date" id="inputStartDate" name="inputStartDate"/>
+                </div>
+                <!-- End Of Input Start Date -->
+                <!-- Input End Date -->
+                <div class="input-end-date">
+                  <label for="inputEndDate">End Date</label>
+                  <input class="form-control" type="date" id="inputEndDate" name="inputEndDate"/>
+                </div>
+                <!-- End Of End Date -->
+              </div>
+              <div class="description">
+                <label for="inputDescription">Description</label>
+                <textarea class="form-control" id="inputDescription" cols="50" rows="10" name="inputDescription"></textarea>
+              </div>
+              <div class="technologies">
+                <label>Technologies</label>
+                <div class="tech1">
+                  <input class="form-check-input mt-0" type="checkbox" id="nodejs" name="nodejs"/>
+                  <label for="nodejs">Node Js</label>
+                  <input class="form-check-input mt-0" type="checkbox" id="golang" name="golang"/>
+                  <label for="golang">Golang</label>
+                </div>
+                <div class="tech2">
+                  <input class="form-check-input mt-0" type="checkbox" id="reactjs" name="reactjs"/>
+                  <label for="reactjs">React Js</label>
+                  <input class="form-check-input mt-0" type="checkbox" id="javascript" name="javascript"/>
+                  <label for="javascript">Javascript</label>
+                </div>
+              </div>
+              <div class="upload-image input-group">
+                <label for="inputImage">Upload Image</label>
+                <div class="input-image">
+                  <input type="file" id="inputImage" class="form-control" name="inputImage"/>
+                </div>
+              </div>
+              <div class="button-submit">
+                <button type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Of Added Project -->
+    <script src="/Js/myProject.js"></script>
+    <script src="/Js/index.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
