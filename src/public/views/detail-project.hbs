@@ -62,7 +62,7 @@
     <section>
       <div class="container">
         <div class="detail-project">
-          <h1>{{data.title}}</h1>
+          <h1>{{data.nameProject}}</h1>
           <div class="detail">
             <div class="left">
               <img src="/image/blog-img.png" alt="image-project" />
@@ -73,11 +73,11 @@
                 <div class="duration-content">
                   <div class="date">
                     <i class="fa-solid fa-calendar-days"> </i>
-                    <p>12 Jan 2022 - 11 Feb 2022</p>
+                    <p>{{data.startDate}} - {{data.endDate}}</p>
                   </div>
                   <div class="duration-time">
                     <i class="fa-regular fa-clock"> </i>
-                    <p>1 Month</p>
+                    <p>{{data.duration}}</p>
                   </div>
                 </div>
               </div>

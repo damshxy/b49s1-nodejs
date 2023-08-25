@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -24,41 +23,44 @@
   </head>
 
   <body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-left d-flex mt-2">
-      <ul>
-        <li class="nav-item">
-          <a class="nav-brand" href="/">
-            <img src="/image/logo.png" alt="Logo" />
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/" class="nav-link item-collapse active">Home</a>
-        </li>
-        <li class="nav-item">
-          <a href="/add-project" class="nav-link item-collapse">Add Project</a>
-        </li>
-        <li class="nav-item">
-          <a href="/testimonial" class="nav-link item-collapse">Testimonial</a>
-        </li>
-      </ul>
-      <form class="nav-right nav-item item-collapse">
-        <a href="/contact" class="btn">Contact Me</a>
-      </form>
-    </div>
-    <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-  </nav>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-left d-flex mt-2">
+        <ul>
+          <li class="nav-item">
+            <a class="nav-brand" href="/">
+              <img src="/image/logo.png" alt="Logo" />
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link item-collapse active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="/add-project" class="nav-link item-collapse">Add Project</a>
+          </li>
+          <li class="nav-item">
+            <a
+              href="/testimonial"
+              class="nav-link item-collapse"
+            >Testimonial</a>
+          </li>
+        </ul>
+        <form class="nav-right nav-item item-collapse">
+          <a href="/contact" class="btn">Contact Me</a>
+        </form>
+      </div>
+      <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </nav>
 
-  <div class="hamburger-nav-container" id="hamburger-nav-container">
-    <a href="/" class="hamburger-active">Home</a>
-    <a href="/add-project">Add Project</a>
-    <a href="/testimonial">Testimonial</a>
-    <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
-  </div>
-  <!-- End Of Navbar -->
+    <div class="hamburger-nav-container" id="hamburger-nav-container">
+      <a href="/" class="hamburger-active">Home</a>
+      <a href="/add-project">Add Project</a>
+      <a href="/testimonial">Testimonial</a>
+      <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
+    </div>
+    <!-- End Of Navbar -->
     <!-- Card Profile -->
     <div class="container">
       <section>
@@ -87,25 +89,24 @@
               <div class="buttonCv">
                 <a href="/contact"><button>Contact Me</button></a>
                 <p>
-                  Download Cv
-                  <a href="pdf/sezyxx.pdf"
-                    ><i class="fa-solid fa-download"></i
-                  ></a>
+                  <a href="/pdf/sezyxx.pdf">Download Cv<i
+                      class="fa-solid fa-download"
+                    ></i></a>
                 </p>
               </div>
               <div class="social">
-                <a href="https://www.linkedin.com/in/mochamad-saddam-a44b87249/"
-                  ><i class="fa-brands fa-linkedin"></i
-                ></a>
-                <a href="https://instagram.com/encdamz"
-                  ><i class="fa-brands fa-instagram"></i
-                ></a>
-                <a href="https://twitter.com/nczeesh"
-                  ><i class="fa-brands fa-twitter"></i
-                ></a>
-                <a href="https://github.com/shenczz"
-                  ><i class="fa-brands fa-github"></i
-                ></a>
+                <a
+                  href="https://www.linkedin.com/in/mochamad-saddam-a44b87249/"
+                ><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://instagram.com/encdamz"><i
+                    class="fa-brands fa-instagram"
+                  ></i></a>
+                <a href="https://twitter.com/nczeesh"><i
+                    class="fa-brands fa-twitter"
+                  ></i></a>
+                <a href="https://github.com/shenczz"><i
+                    class="fa-brands fa-github"
+                  ></i></a>
               </div>
             </div>
           </div>
@@ -125,99 +126,59 @@
     <section class="project-card">
       <h1>My Project</h1>
       <div class="container-card" id="container-card">
-        <div class="card-project">
-          <div class="image-project">
-            <img src="/image/blog-img.png" alt="image-project" />
-          </div>
-          <div class="title-and-duration">
-            <h3>
-              <a href="/detail-project/1">Dumbways Mobile App - 2022</a>
-            </h3>
-            <p>Duration: 3 Month</p>
-          </div>
-          <div class="description-project">
-            <p>
-              App that used for dumbways student, it was deployed and can
-              downloaded on playstore. Happy Download
-            </p>
-          </div>
-          <div class="tech-project">
-            <i class="fa-brands fa-node-js"></i>
-            <i class="fa-brands fa-golang"></i>
-            <i class="fa-brands fa-react"></i>
-            <i class="fa-brands fa-square-js"></i>
-          </div>
-          <div class="button-group">
-            <div class="btn-edit">
-              <button type="button">Edit</button>
+        {{#each dataProject}}
+          <div class="card-project">
+            <div class="image-project">
+              <img src="/image/blog-img.png" alt="image-project" />
             </div>
-            <div class="btn-delete">
-              <button type="button">Delete</button>
+            <div class="title-and-duration">
+              <h3>
+                <a href="/detail-project/{{@index}}">{{this.nameProject}}</a>
+              </h3>
+              <p>Duration: {{this.duration}}</p>
             </div>
-          </div>
-        </div>
-        <div class="card-project">
-          <div class="image-project">
-            <img src="/image/blog-img.png" alt="image-project" />
-          </div>
-          <div class="title-and-duration">
-            <h3>
-              <a href="/detail-project">Dumbways Mobile App - 2022</a>
-            </h3>
-            <p>Duration: 3 Month</p>
-          </div>
-          <div class="description-project">
-            <p>
-              App that used for dumbways student, it was deployed and can
-              downloaded on playstore. Happy Download
-            </p>
-          </div>
-          <div class="tech-project">
-            <i class="fa-brands fa-node-js"></i>
-            <i class="fa-brands fa-golang"></i>
-            <i class="fa-brands fa-react"></i>
-            <i class="fa-brands fa-square-js"></i>
-          </div>
-          <div class="button-group">
-            <div class="btn-edit">
-              <button type="button">Edit</button>
+            <div class="description-project">
+              <p>
+                {{this.description}}
+              </p>
             </div>
-            <div class="btn-delete">
-              <button type="button">Delete</button>
+            <div class="tech-project">
+              {{#if this.nodejs}}
+                <i class="fa-brands fa-node-js"></i>
+              {{/if}}
+
+              {{#if this.golang}}
+                <i class="fa-brands fa-golang"></i>
+              {{/if}}
+
+              {{#if this.reactjs}}
+                <i class="fa-brands fa-react"></i>
+              {{/if}}
+
+              {{#if this.javascript}}
+                <i class="fa-brands fa-square-js"></i>
+              {{/if}}
+            </div>
+            <div class="button-group">
+              <div class="btn-edit">
+                <a
+                  href=""
+                  class="btn"
+                  type="button"
+                  style="padding: 5px 30px; background-color: black; color: white !important;"
+                >Edit</a>
+              </div>
+              <div class="btn-delete">
+                <a
+                  href="/delete-project/{{@index}}"
+                  class="btn"
+                  type="button"
+                  style="padding: 5px 30px; background-color: black; color: white !important;"
+                >Delete</a>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="card-project">
-          <div class="image-project">
-            <img src="/image/blog-img.png" alt="image-project" />
-          </div>
-          <div class="title-and-duration">
-            <h3>
-              <a href="/detail-project">Dumbways Mobile App - 2022</a>
-            </h3>
-            <p>Duration: 3 Month</p>
-          </div>
-          <div class="description-project">
-            <p>
-              App that used for dumbways student, it was deployed and can
-              downloaded on playstore. Happy Download
-            </p>
-          </div>
-          <div class="tech-project">
-            <i class="fa-brands fa-node-js"></i>
-            <i class="fa-brands fa-golang"></i>
-            <i class="fa-brands fa-react"></i>
-            <i class="fa-brands fa-square-js"></i>
-          </div>
-          <div class="button-group">
-            <div class="btn-edit">
-              <button type="button">Edit</button>
-            </div>
-            <div class="btn-delete">
-              <button type="button">Delete</button>
-            </div>
-          </div>
-        </div>
+        {{/each}}
       </div>
     </section>
     <!-- End Of Card Project -->

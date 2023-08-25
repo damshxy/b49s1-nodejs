@@ -4,25 +4,30 @@ const path = require("path");
 const { start } = require("repl");
 const PORT = 5000;
 
+// Local Module
+const dataProject = require("./fake-data");
+const distanceTime = require("./src/utils/count-duration.utils");
+
 // Setup call hbs with sub folder
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "src/public/views"));
 
 // Set serving static file
-app.use(express.static('src/assets'))
+app.use(express.static("src/assets"));
 
 // Set parsing
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
 
 // Get Routing
-app.get('/', home)
-app.get('/add-project', formProject)
-app.get('/testimonial', testimonial)
-app.get('/contact', contact)
-app.get('/detail-project/:id', detailProject)
+app.get("/", home);
+app.get("/add-project", formProject);
+app.get("/testimonial", testimonial);
+app.get("/contact", contact);
+app.get("/detail-project/:id", detailProject);
+app.get("/delete-project/:id", deleteProject);
 
 // Post Routing
-app.post('/add-project', addProject)
+app.post("/add-project", addProject);
 
 // Local Server
 app.listen(PORT, () => {
@@ -31,55 +36,71 @@ app.listen(PORT, () => {
 
 // Home
 function home(req, res) {
-  res.render('index')
+  res.render("index", { dataProject });
 }
 
 // Add Project Method Get / Post
 function formProject(req, res) {
-  res.render('add-project')
+  res.render("add-project");
 }
 
 function addProject(req, res) {
-  const nameProject = req.body.inputProject
-  const startDate = req.body.inputStartDate
-  const endDate = req.body.inputEndDate
-  const description = req.body.inputDescription
-  const nodejs = req.body.nodejs
-  const golang = req.body.golang
-  const reactjs = req.body.reactjs
-  const javascript = req.body.javascript
+  const nameProject = req.body.inputProject;
+  const startDate = req.body.inputStartDate;
+  const endDate = req.body.inputEndDate;
+  const duration = distanceTime(startDate, endDate);
+  const description = req.body.inputDescription;
 
-  console.log(nameProject)
-  console.log(startDate)
-  console.log(endDate)
-  console.log(description)
-  console.log(nodejs)
-  console.log(golang)
-  console.log(reactjs)
-  console.log(javascript)
+  // icon
+  const node = '<i class="fa-brands fa-node-js"></i>';
+  const golang = ' <i class="fa-brands fa-golang"></i>';
+  const react = '<i class="fa-brands fa-react"></i>';
+  const javascript = '<i class="fa-brands fa-square-js"></i>';
 
-  res.redirect('/')
+  const nodejsChecked = req.body.nodejs === 'on' ? node : '';
+  const golangChecked = req.body.golang === 'on' ? golang : '';
+  const reactjsChecked = req.body.reactjs === 'on' ? react : '';
+  const javascriptChecked = req.body.javascript === 'on' ? javascript : '';
+
+  const data = {
+    nameProject,
+    startDate,
+    endDate,
+    duration,
+    description,
+    nodejs: nodejsChecked,
+    golang: golangChecked,
+    reactjs: reactjsChecked,
+    javascript: javascriptChecked,
+  };
+
+  console.log(data)
+
+  dataProject.push(data);
+  res.redirect("/");
 }
 
 // Testimonial
 function testimonial(req, res) {
-  res.render('testimonial')
+  res.render("testimonial");
 }
 
 // Contact
-function contact(req,res) {
-  res.render('contact')
+function contact(req, res) {
+  res.render("contact");
 }
 
 // Detail Project
-function detailProject(req,res) {
-  const { id } = req.params
+function detailProject(req, res) {
+  const { id } = req.params;
 
-  const data = {
-    id,
-    title: "Dumbways Mobile App - 2022",
-    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores a adipisci fugiat perspiciatis nisi magnam. Eum modi natus sunt quibusdam mollitia quod, maxime dolores. Porro rem officiis ad praesentium minima? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum pariatur nulla impedit, quasi, aliquam nesciunt consequuntur aliquid suscipit incidunt optio dolores, quis distinctio quae repellendus debitis aspernatur dolor error. Sit? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe, iste vero dolore delectus provident placeat explicabo, beatae tempora ratione alias eveniet sint laborum optio at omnis repellat mollitia odio aliquam."
-  }
+  res.render("detail-project", { data: dataProject[id] });
+}
 
-  res.render('detail-project', { data })
+// Delete Project
+function deleteProject(req, res) {
+  const { id } = req.params;
+
+  dataProject.splice(id, 1);
+  res.redirect("/");
 }
