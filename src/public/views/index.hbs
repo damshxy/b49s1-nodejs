@@ -126,14 +126,14 @@
     <section class="project-card">
       <h1>My Project</h1>
       <div class="container-card" id="container-card">
-        {{#each dataProject}}
+        {{#each data}}
           <div class="card-project">
             <div class="image-project">
               <img src="/image/blog-img.png" alt="image-project" />
             </div>
             <div class="title-and-duration">
               <h3>
-                <a href="/detail-project/{{@index}}">{{this.nameProject}}</a>
+                <a href="/detail-project/{{@index}}">{{this.name_project}}</a>
               </h3>
               <p>Duration: {{this.duration}}</p>
             </div>
@@ -162,7 +162,7 @@
             <div class="button-group">
               <div class="btn-edit">
                 <a
-                  href=""
+                  href="/update-project/{{@index}}"
                   class="btn"
                   type="button"
                   style="padding: 5px 30px; background-color: black; color: white !important;"

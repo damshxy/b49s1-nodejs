@@ -4,6 +4,11 @@ const path = require("path");
 const { start } = require("repl");
 const PORT = 5000;
 
+// Sequelize init
+const config = require('./src/config/config.json')
+const { Sequelize, QueryTypes } = require('sequelize')
+const sequelize = new Sequelize(config.development)
+
 // Local Module
 const dataProject = require("./fake-data");
 const distanceTime = require("./src/utils/count-duration.utils");
@@ -25,9 +30,11 @@ app.get("/testimonial", testimonial);
 app.get("/contact", contact);
 app.get("/detail-project/:id", detailProject);
 app.get("/delete-project/:id", deleteProject);
+app.get("/update-project/:id", formUpdate);
 
 // Post Routing
 app.post("/add-project", addProject);
+app.post("/updated-project/:id", updatedProject);
 
 // Local Server
 app.listen(PORT, () => {
@@ -35,8 +42,39 @@ app.listen(PORT, () => {
 });
 
 // Home
-function home(req, res) {
-  res.render("index", { dataProject });
+async function home(req, res) {
+  try {
+    const query = `SELECT name_project, start_date, end_date, description, technologies, image FROM tb_projects`
+    let obj = await sequelize.query(query, { type: QueryTypes.SELECT})
+
+    const technologies = [
+      {
+        name: 'nodejs',
+        isUsed: true,
+      },
+      {
+        name: 'reactjs',
+        isUsed: false,
+      },
+      {
+        name: 'golang',
+        isUsed: true,
+      },
+      {
+        name: 'javascript',
+        isUsed: true,
+      }
+    ]
+
+    const data = obj.map(res => ({
+      ...res
+    }))
+
+    res.render("index", { data });
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 // Add Project Method Get / Post
@@ -57,10 +95,10 @@ function addProject(req, res) {
   const react = '<i class="fa-brands fa-react"></i>';
   const javascript = '<i class="fa-brands fa-square-js"></i>';
 
-  const nodejsChecked = req.body.nodejs === 'on' ? node : '';
-  const golangChecked = req.body.golang === 'on' ? golang : '';
-  const reactjsChecked = req.body.reactjs === 'on' ? react : '';
-  const javascriptChecked = req.body.javascript === 'on' ? javascript : '';
+  const nodejsChecked = req.body.nodejs === "on" ? node : "";
+  const golangChecked = req.body.golang === "on" ? golang : "";
+  const reactjsChecked = req.body.reactjs === "on" ? react : "";
+  const javascriptChecked = req.body.javascript === "on" ? javascript : "";
 
   const data = {
     nameProject,
@@ -74,7 +112,7 @@ function addProject(req, res) {
     javascript: javascriptChecked,
   };
 
-  console.log(data)
+  console.log(data);
 
   dataProject.push(data);
   res.redirect("/");
@@ -98,9 +136,56 @@ function detailProject(req, res) {
 }
 
 // Delete Project
-function deleteProject(req, res) {
+async function deleteProject(req, res) {
   const { id } = req.params;
 
-  dataProject.splice(id, 1);
+  try {
+    await sequelize.query(`DELETE FROM tb_projects WHERE id = :id`, {
+      replacements: { id: id},
+      type: QueryTypes.DELETE
+    })
+
+    res.redirect("/");
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// Update Project
+function formUpdate(req, res) {
+  const { id } = req.params;
+
+  res.render("update-project", { data: dataProject[id] });
+}
+
+// Processing Update
+function updatedProject(req, res) {
+  const { id } = req.params;
+  const projectIndex = dataProject.findIndex((project) => project.id === id);
+  const nameProject = req.body.inputProject;
+  const startDate = req.body.inputStartDate;
+  const endDate = req.body.inputEndDate;
+  const duration = distanceTime(startDate, endDate);
+  const description = req.body.inputDescription;
+
+  const nodejsChecked = req.body.nodejs === "on" ? node : "";
+  const golangChecked = req.body.golang === "on" ? golang : "";
+  const reactjsChecked = req.body.reactjs === "on" ? react : "";
+  const javascriptChecked = req.body.javascript === "on" ? javascript : "";
+
+  const data = {
+    nameProject,
+    startDate,
+    endDate,
+    duration,
+    projectIndex,
+    description,
+    nodejs: nodejsChecked,
+    golang: golangChecked,
+    reactjs: reactjsChecked,
+    javascript: javascriptChecked,
+  };
+
+  dataProject.push(data);
   res.redirect("/");
 }
