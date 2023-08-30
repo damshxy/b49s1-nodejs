@@ -5,9 +5,9 @@ const { start } = require("repl");
 const PORT = 5000;
 
 // Sequelize init
-const config = require('./src/config/config.json')
-const { Sequelize, QueryTypes } = require('sequelize')
-const sequelize = new Sequelize(config.development)
+const config = require("./src/config/config.json");
+const { Sequelize, QueryTypes, DataTypes } = require("sequelize");
+const sequelize = new Sequelize(config.development);
 
 // Local Module
 const dataProject = require("./fake-data");
@@ -44,36 +44,16 @@ app.listen(PORT, () => {
 // Home
 async function home(req, res) {
   try {
-    const query = `SELECT name_project, start_date, end_date, description, technologies, image FROM tb_projects`
-    let obj = await sequelize.query(query, { type: QueryTypes.SELECT})
+    const query = `SELECT id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image FROM tb_projects`;
+    let obj = await sequelize.query(query, { type: QueryTypes.SELECT });
 
-    const technologies = [
-      {
-        name: 'nodejs',
-        isUsed: true,
-      },
-      {
-        name: 'reactjs',
-        isUsed: false,
-      },
-      {
-        name: 'golang',
-        isUsed: true,
-      },
-      {
-        name: 'javascript',
-        isUsed: true,
-      }
-    ]
-
-    const data = obj.map(res => ({
-      ...res
-    }))
+    const data = obj.map((res) => ({
+      ...res,
+    }));
 
     res.render("index", { data });
-
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -82,40 +62,37 @@ function formProject(req, res) {
   res.render("add-project");
 }
 
-function addProject(req, res) {
-  const nameProject = req.body.inputProject;
-  const startDate = req.body.inputStartDate;
-  const endDate = req.body.inputEndDate;
-  const duration = distanceTime(startDate, endDate);
-  const description = req.body.inputDescription;
+async function addProject(req, res) {
+  try {
+    const nameProject = req.body.inputProject;
+    const startDate = req.body.inputStartDate;
+    const endDate = req.body.inputEndDate;
+    const duration = distanceTime(startDate, endDate);
+    const description = req.body.inputDescription;
+    const nodejs = req.body.nodejs;
+    const golang = req.body.golang;
+    const reactjs = req.body.reactjs;
+    const javascript = req.body.javascript;
 
-  // icon
-  const node = '<i class="fa-brands fa-node-js"></i>';
-  const golang = ' <i class="fa-brands fa-golang"></i>';
-  const react = '<i class="fa-brands fa-react"></i>';
-  const javascript = '<i class="fa-brands fa-square-js"></i>';
+    const image = "image.png";
 
-  const nodejsChecked = req.body.nodejs === "on" ? node : "";
-  const golangChecked = req.body.golang === "on" ? golang : "";
-  const reactjsChecked = req.body.reactjs === "on" ? react : "";
-  const javascriptChecked = req.body.javascript === "on" ? javascript : "";
+    // icon
+    const nodejsCheck = nodejs ? true : false;
+    const golangCheck = golang ? true : false;
+    const reactjsCheck = reactjs ? true : false;
+    const javascriptCheck = javascript ? true : false;
 
-  const data = {
-    nameProject,
-    startDate,
-    endDate,
-    duration,
-    description,
-    nodejs: nodejsChecked,
-    golang: golangChecked,
-    reactjs: reactjsChecked,
-    javascript: javascriptChecked,
-  };
+    const query = await sequelize.query(`
+  INSERT INTO tb_projects (name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image)
+  VALUES ('${nameProject}', '${startDate}', '${endDate}', '${description}', '${nodejsCheck}', '${golangCheck}', '${reactjsCheck}', '${javascriptCheck}', '${image}')
+`);
 
-  console.log(data);
+    console.log(query); // Output the executed SQL query
 
-  dataProject.push(data);
-  res.redirect("/");
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Testimonial
@@ -129,10 +106,17 @@ function contact(req, res) {
 }
 
 // Detail Project
-function detailProject(req, res) {
-  const { id } = req.params;
+async function detailProject(req, res) {
+  try {
+    const { id } = req.params;
 
-  res.render("detail-project", { data: dataProject[id] });
+    const query = `SELECT id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image FROM "tb_projects" WHERE id=${id}`;
+    const obj = await sequelize.query(query, { type: QueryTypes.SELECT });
+
+    res.render("detail-project", { project: obj[0] });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Delete Project
@@ -140,14 +124,11 @@ async function deleteProject(req, res) {
   const { id } = req.params;
 
   try {
-    await sequelize.query(`DELETE FROM tb_projects WHERE id = :id`, {
-      replacements: { id: id},
-      type: QueryTypes.DELETE
-    })
+    await sequelize.query(`DELETE FROM tb_projects WHERE id=${id}`);
 
     res.redirect("/");
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 

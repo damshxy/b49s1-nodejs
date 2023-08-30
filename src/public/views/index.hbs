@@ -133,7 +133,7 @@
             </div>
             <div class="title-and-duration">
               <h3>
-                <a href="/detail-project/{{@index}}">{{this.name_project}}</a>
+                <a href="/detail-project/{{this.id}}">{{this.name_project}}</a>
               </h3>
               <p>Duration: {{this.duration}}</p>
             </div>
@@ -162,7 +162,7 @@
             <div class="button-group">
               <div class="btn-edit">
                 <a
-                  href="/update-project/{{@index}}"
+                  href="/update-project/{{this.id}}"
                   class="btn"
                   type="button"
                   style="padding: 5px 30px; background-color: black; color: white !important;"
@@ -170,7 +170,7 @@
               </div>
               <div class="btn-delete">
                 <a
-                  href="/delete-project/{{@index}}"
+                  href="/delete-project/{{this.id}}"
                   class="btn"
                   type="button"
                   style="padding: 5px 30px; background-color: black; color: white !important;"
