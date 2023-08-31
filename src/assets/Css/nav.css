@@ -1,79 +1,91 @@
 nav {
-    display: flex;
-    padding: 20px;
-    background-color: #cecece;
+  display: flex;
+  padding: 20px;
+  background-color: #cecece;
 }
 
 nav ul {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
 }
 
 nav ul li {
-    display: flex;
-    margin: auto 15px;
-    list-style-type: none;
-
+  display: flex;
+  margin: auto 15px;
+  list-style-type: none;
 }
 
 nav ul li .active {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .nav-left {
-    flex: 50%;
+  flex: 50%;
 }
 
 .nav-right {
-    flex: 50%;
-    text-align: end;
-    margin-top: 4px;
-    margin-right: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  flex: auto;
+  text-align: end;
+  margin-right: 5px;
 }
 
-.nav-right a {
-    padding: 8px 20px;
-    border-radius: 8px;
-    background-color: black;
-    color: white !important;
+.nav-right .login-register {
+  margin-top: 8px;
+  margin-right: 25px;
+}
+
+.nav-right .login-register .item-login {
+  padding-right: 20px;
+}
+
+
+
+.nav-right .btn-contact {
+  padding: 8px 20px;
+  border-radius: 8px;
+  background-color: black;
+  color: white !important;
 }
 
 #btn-barsMenu {
-    display: none;
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
-  }
-  
-  .hamburger-nav-container {
-    font-size: 23px;
-    list-style-type: none;
-    display: none;
-  }
-  
-  .hamburger-nav-container a {
-    text-decoration: none;
-    color: black;
-    background-color: #9a9a9a;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-  }
+  display: none;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+}
 
-  .hamburger-nav-container a:hover {
-    color: white;
-  }
-  
-  .hamburger-nav-container .hamburger-active {
-    text-decoration: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border: 1px solid #fff;
-  }
+.hamburger-nav-container {
+  font-size: 23px;
+  list-style-type: none;
+  display: none;
+}
+
+.hamburger-nav-container a {
+  text-decoration: none;
+  color: black;
+  background-color: #9a9a9a;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.hamburger-nav-container a:hover {
+  color: white;
+}
+
+.hamburger-nav-container .hamburger-active {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid #fff;
+}

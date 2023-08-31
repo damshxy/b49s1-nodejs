@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -22,41 +21,61 @@
     <title>Testimonial</title>
   </head>
   <body>
-   <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-left d-flex mt-2">
-      <ul>
-        <li class="nav-item">
-          <a class="nav-brand" href="/">
-            <img src="image/logo.png" alt="Logo" />
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/" class="nav-link item-collapse">Home</a>
-        </li>
-        <li class="nav-item">
-          <a href="/add-project" class="nav-link item-collapse">Add Project</a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link item-collapse active">Testimonial</a>
-        </li>
-      </ul>
-      <form class="nav-right nav-item item-collapse">
-        <a href="/contact" class="btn">Contact Me</a>
-      </form>
-    </div>
-    <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-  </nav>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-left d-flex mt-2">
+        <ul>
+          <li class="nav-item">
+            <a class="nav-brand" href="/">
+              <img src="/image/logo.png" alt="Logo" />
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link item-collapse">Home</a>
+          </li>
+          {{#if isLogin}}
+            <li class="nav-item">
+              <a href="/add-project" class="nav-link item-collapse">Add Project</a>
+            </li>
+          {{/if}}
+          <li class="nav-item">
+            <a
+              href="/testimonial"
+              class="nav-link item-collapse active"
+            >Testimonial</a>
+          </li>
+        </ul>
+        <form class="nav-right nav-item item-collapse">
+          <div class="login-register">
+            {{#if isLogin}}
+              <a href="#" class="nav-link text-success active">Hello,
+                {{user}}</a>
+              <a href="/logout">Logout</a>
+            {{else}}
+              <a href="/login" class="item-login item-collapse active">Login</a>
+              <a
+                href="/register"
+                class="item-register item-collapse"
+              >Register</a>
+            {{/if}}
+          </div>
+          <div class="contact">
+            <a href="/contact" class="btn btn-contact">Contact Me</a>
+          </div>
+        </form>
+      </div>
+      <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </nav>
 
-  <div class="hamburger-nav-container" id="hamburger-nav-container">
-    <a href="/" class="hamburger-active">Home</a>
-    <a href="/add-project">Add Project</a>
-    <a href="#">Testimonial</a>
-    <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
-  </div>
-  <!-- End Of Navbar -->
+    <div class="hamburger-nav-container" id="hamburger-nav-container">
+      <a href="/" class="hamburger-active">Home</a>
+      <a href="/add-project">Add Project</a>
+      <a href="/testimonial">Testimonial</a>
+      <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
+    </div>
+    <!-- End Of Navbar -->
 
     <!-- Section Testimonial -->
     <section>
@@ -69,19 +88,24 @@
               All
             </button>
             <button class="rating-btn" onclick="getFilteredTestimonials(1)">
-              1 <i class="fa-solid fa-star"></i>
+              1
+              <i class="fa-solid fa-star"></i>
             </button>
             <button class="rating-btn" onclick="getFilteredTestimonials(2)">
-              2 <i class="fa-solid fa-star"></i>
+              2
+              <i class="fa-solid fa-star"></i>
             </button>
             <button class="rating-btn" onclick="getFilteredTestimonials(3)">
-              3 <i class="fa-solid fa-star"></i>
+              3
+              <i class="fa-solid fa-star"></i>
             </button>
             <button class="rating-btn" onclick="getFilteredTestimonials(4)">
-              4 <i class="fa-solid fa-star"></i>
+              4
+              <i class="fa-solid fa-star"></i>
             </button>
             <button class="rating-btn" onclick="getFilteredTestimonials(5)">
-              5 <i class="fa-solid fa-star"></i>
+              5
+              <i class="fa-solid fa-star"></i>
             </button>
           </div>
         </div>

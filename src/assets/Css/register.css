@@ -1,0 +1,32 @@
+.container > h2 {
+    display: flex;
+    justify-content: center;
+    margin: 90px auto;
+    font-size: 40px;
+  }
+  
+  .form-register {
+    display: flex;
+    justify-content: center;
+    margin: 90px auto;
+    padding: 10px auto;
+  }
+  
+  .form-register .inputName, .inputEmail, .inputPassword {
+    margin-bottom: 20px;
+  }
+  
+  .btn-submit {
+    display: flex;
+    justify-content: end;
+    text-align: end;
+    margin-left: 200px;
+  }
+  
+  .btn-submit button {
+    border: 1px black solid;
+    border-radius: 8px;
+    background-color: black;
+    color: white !important;
+    padding: 5px 25px;
+  }

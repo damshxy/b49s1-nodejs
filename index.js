@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const bcrypt = require('bcrypt')
+const session  = require('express-session')
 const { start } = require("repl");
 const PORT = 5000;
 
@@ -11,6 +13,8 @@ const sequelize = new Sequelize(config.development);
 
 // Local Module
 const distanceTime = require("./src/utils/count-duration.utils");
+const flash = require("express-flash");
+const { log } = require("console");
 
 // Setup call hbs with sub folder
 app.set("view engine", "hbs");
@@ -22,6 +26,24 @@ app.use(express.static("src/assets"));
 // Set parsing
 app.use(express.urlencoded({ extended: false }));
 
+// Setup Flash
+app.use(flash())
+
+// Setup Session
+app.use(
+  session({
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 2,
+    },
+    store: new session.MemoryStore(),
+    saveUninitialized: true,
+    resave: false,
+    secret: "secretValue",
+  })
+)
+
 // Get Routing
 app.get("/", home);
 app.get("/add-project", formProject);
@@ -30,10 +52,15 @@ app.get("/contact", contact);
 app.get("/detail-project/:id", detailProject);
 app.get("/delete-project/:id", deleteProject);
 app.get("/update-project/:id", formUpdate);
+app.get('/login', formLogin)
+app.get('/register', formRegister)
+app.get('/logout', logout)
 
 // Post Routing
 app.post("/add-project", addProject);
 app.post("/update-project/:id", updatedProject);
+app.post('/login', login)
+app.post('/register', register)
 // Local Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
@@ -47,9 +74,14 @@ async function home(req, res) {
 
     const data = obj.map((res) => ({
       ...res,
+      isLogin: req.session.isLogin,
     }));
 
-    res.render("index", { data });
+    res.render("index", { 
+      data,
+      isLogin: req.session.isLogin,
+      user: req.session.user, 
+    });
   } catch (error) {
     console.log(error);
   }
@@ -57,7 +89,10 @@ async function home(req, res) {
 
 // Add Project Method Get / Post
 function formProject(req, res) {
-  res.render("add-project");
+  res.render("add-project", {
+    isLogin: req.session.isLogin,
+    user: req.session.user
+  });
 }
 
 async function addProject(req, res) {
@@ -97,12 +132,18 @@ async function addProject(req, res) {
 
 // Testimonial
 function testimonial(req, res) {
-  res.render("testimonial");
+  res.render("testimonial", {
+    isLogin: req.session.isLogin,
+    user: req.session.user,
+  });
 }
 
 // Contact
 function contact(req, res) {
-  res.render("contact");
+  res.render("contact", {
+    isLogin: req.session.isLogin,
+    user: req.session.user,
+  });
 }
 
 // Detail Project
@@ -113,7 +154,11 @@ async function detailProject(req, res) {
     const query = `SELECT id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image FROM "tb_projects" WHERE id=${id}`;
     const obj = await sequelize.query(query, { type: QueryTypes.SELECT });
 
-    res.render("detail-project", { project: obj[0] });
+    res.render("detail-project", { 
+      project: obj[0],
+      isLogin: req.session.isLogin,
+      user: req.session.user, 
+    });
   } catch (error) {
     console.log(error);
   }
@@ -177,5 +222,81 @@ async function updatedProject(req, res) {
     res.redirect("/");
   } catch (error) {
     console.log(error);
+  }
+}
+
+// Form Login
+function formLogin(req, res) {
+  res.render('form-login')
+}
+
+async function login(req, res) {
+ try {
+  const {
+    email,
+    password
+  } = req.body
+
+  const query = `SELECT * FROM tb_users WHERE email = '${email}'`
+  let obj = await sequelize.query(query, { type: QueryTypes.SELECT })
+
+  // Kondisi jika email belum terdaftar
+  if (!obj.length) {
+    req.flash('danger', 'Email Belum Terdaftar')
+    return res.redirect('/login')
+  }
+
+  await bcrypt.compare(password, obj[0].password, (err, result) => {
+    if (!result) {
+      req.flash('danger', 'Password Salah!!!')
+      return res.redirect('/login')
+    } else {
+      req.session.isLogin = true
+      req.session.user = obj[0].name
+      req.flash('success', 'Login Berhasil!!!')
+      res.redirect('/')
+    }
+  })
+
+ } catch (error) {
+  console.log(error)
+ } 
+}
+
+// Form Register
+function formRegister(req, res) {
+  res.render('form-register')
+}
+
+async function register(req, res) {
+  try {
+    const {
+      name,
+      email,
+      password
+    } = req.body
+    const salt = 10
+
+    await bcrypt.hash(password, salt, (err, hashPassword) => {
+      const query = `INSERT INTO tb_users (name, email, password) VALUES ('${name}','${email}', '${hashPassword}')`
+      sequelize.query(query)
+      res.redirect('/login')
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function logout(req, res) {
+  if (req.session.isLogin) {
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err)
+      } else {
+        res.redirect('/')
+      }
+    })
+  } else {
+    res.redirect('/')
   }
 }

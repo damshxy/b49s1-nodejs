@@ -35,9 +35,11 @@
           <li class="nav-item">
             <a href="/" class="nav-link item-collapse active">Home</a>
           </li>
-          <li class="nav-item">
-            <a href="/add-project" class="nav-link item-collapse">Add Project</a>
-          </li>
+          {{#if isLogin}}
+            <li class="nav-item">
+              <a href="/add-project" class="nav-link item-collapse">Add Project</a>
+            </li>
+          {{/if}}
           <li class="nav-item">
             <a
               href="/testimonial"
@@ -46,7 +48,22 @@
           </li>
         </ul>
         <form class="nav-right nav-item item-collapse">
-          <a href="/contact" class="btn">Contact Me</a>
+          <div class="login-register">
+            {{#if isLogin}}
+              <a href="#" class="nav-link text-success active">Hello,
+                {{user}}</a>
+              <a href="/logout">Logout</a>
+            {{else}}
+              <a href="/login" class="item-login item-collapse active">Login</a>
+              <a
+                href="/register"
+                class="item-register item-collapse"
+              >Register</a>
+            {{/if}}
+          </div>
+          <div class="contact">
+            <a href="/contact" class="btn btn-contact">Contact Me</a>
+          </div>
         </form>
       </div>
       <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
@@ -61,6 +78,13 @@
       <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
     </div>
     <!-- End Of Navbar -->
+    {{#if messages.success}}
+      <div class="alert alert-success" role="alert">
+        <div class="container">
+          {{messages.success}}
+        </div>
+      </div>
+    {{/if}}
     <!-- Card Profile -->
     <div class="container">
       <section>
@@ -125,6 +149,7 @@
     <hr />
     <section class="project-card">
       <h1>My Project</h1>
+      {{#if isLogin}}
       <div class="container-card" id="container-card">
         {{#each data}}
           <div class="card-project">
@@ -180,6 +205,7 @@
           </div>
         {{/each}}
       </div>
+      {{/if}}
     </section>
     <!-- End Of Card Project -->
     <script src="/Js/index.js"></script>
