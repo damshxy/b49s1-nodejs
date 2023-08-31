@@ -10,7 +10,6 @@ const { Sequelize, QueryTypes, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(config.development);
 
 // Local Module
-const dataProject = require("./fake-data");
 const distanceTime = require("./src/utils/count-duration.utils");
 
 // Setup call hbs with sub folder
@@ -43,7 +42,7 @@ app.listen(PORT, () => {
 // Home
 async function home(req, res) {
   try {
-    const query = `SELECT id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image FROM tb_projects`;
+    const query = `SELECT id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image, duration FROM tb_projects`;
     let obj = await sequelize.query(query, { type: QueryTypes.SELECT });
 
     const data = obj.map((res) => ({
@@ -63,17 +62,19 @@ function formProject(req, res) {
 
 async function addProject(req, res) {
   try {
-    const nameProject = req.body.inputProject;
-    const startDate = req.body.inputStartDate;
-    const endDate = req.body.inputEndDate;
-    const duration = distanceTime(startDate, endDate);
-    const description = req.body.inputDescription;
-    const nodejs = req.body.nodejs;
-    const golang = req.body.golang;
-    const reactjs = req.body.reactjs;
-    const javascript = req.body.javascript;
+    const {
+      inputProject,
+      inputStartDate,
+      inputEndDate,
+      inputDescription,
+      nodejs,
+      golang,
+      reactjs,
+      javascript,
+    } =req.body
 
     const image = "image.png";
+    const duration = distanceTime(inputStartDate, inputEndDate);
 
     // icon
     const nodejsCheck = nodejs ? true : false;
@@ -82,8 +83,8 @@ async function addProject(req, res) {
     const javascriptCheck = javascript ? true : false;
 
     const query = await sequelize.query(`
-  INSERT INTO tb_projects (name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image)
-  VALUES ('${nameProject}', '${startDate}', '${endDate}', '${description}', '${nodejsCheck}', '${golangCheck}', '${reactjsCheck}', '${javascriptCheck}', '${image}')
+  INSERT INTO tb_projects (name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image, duration)
+  VALUES ('${inputProject}', '${inputStartDate}', '${inputEndDate}', '${inputDescription}', '${nodejsCheck}', '${golangCheck}', '${reactjsCheck}', '${javascriptCheck}', '${image}', '${duration}')
 `);
 
     console.log(query); // Output the executed SQL query
@@ -149,16 +150,20 @@ async function formUpdate(req, res) {
 async function updatedProject(req, res) {
   try {
     const { id } = req.params;
-    const nameProject = req.body.inputProject;
-    const startDate = req.body.inputStartDate;
-    const endDate = req.body.inputEndDate;
-    const duration = distanceTime(startDate, endDate);
-    const description = req.body.inputDescription;
-    const image = "image.png";
-    const nodejs = req.body.nodejs;
-    const golang = req.body.golang;
-    const reactjs = req.body.reactjs;
-    const javascript = req.body.javascript;
+    const { 
+      inputProject, 
+      inputStartDate, 
+      inputEndDate, 
+      inputDescription, 
+      nodejs, 
+      golang, 
+      reactjs, 
+      javascript
+    } = req.body
+
+    const duration = distanceTime(inputStartDate, inputEndDate)
+
+    const image = 'imgae.png'
 
     const nodejsCheck = nodejs ? true : false;
     const golangCheck = golang ? true : false;
@@ -166,7 +171,7 @@ async function updatedProject(req, res) {
     const javascriptCheck = javascript ? true : false;
 
     await sequelize.query(`
-    UPDATE tb_projects SET name_project = '${nameProject}', start_date = '${startDate}', end_date='${endDate}', description='${description}', nodejs='${nodejsCheck}', golang='${golangCheck}', reactjs='${reactjsCheck}', javascript='${javascriptCheck}', image='${image}' WHERE id=${id}
+    UPDATE tb_projects SET name_project = '${inputProject}', start_date = '${inputStartDate}', end_date='${inputEndDate}', description='${inputDescription}', nodejs='${nodejsCheck}', golang='${golangCheck}', reactjs='${reactjsCheck}', javascript='${javascriptCheck}', image='${image}', duration='${duration}' WHERE id=${id}
   `);
 
     res.redirect("/");

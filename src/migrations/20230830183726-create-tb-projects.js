@@ -36,6 +36,9 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      duration: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     golang: DataTypes.BOOLEAN,
     reactjs: DataTypes.BOOLEAN,
     javascript: DataTypes.BOOLEAN,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    duration: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'tb_projects',
