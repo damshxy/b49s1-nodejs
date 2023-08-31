@@ -63,29 +63,29 @@
       <div class="added-project-container">
         <div class="added-project-form">
           <div class="form-added">
-            <form action="/updated-project/{{@index}}" method="post">
+            <form action="/update-project/{{data.id}}" method="post">
               <h1>UPDATE MY PROJECT</h1>
               <div class="project-name">
                 <label for="inputProject">Project Name</label>
-                <input class="form-control" type="text" id="inputProject" name="inputProject"/>
+                <input class="form-control" type="text" id="inputProject" name="inputProject" value="{{data.name_project}}"/>
               </div>
               <div class="date">
                 <!-- Input Start Date -->
                 <div class="input-start-date">
                   <label for="inputStartDate">Start Date</label>
-                  <input class="form-control" type="date" id="inputStartDate" name="inputStartDate"/>
+                  <input class="form-control" type="date" id="inputStartDate" name="inputStartDate" value="{{data.start_date}}"/>
                 </div>
                 <!-- End Of Input Start Date -->
                 <!-- Input End Date -->
                 <div class="input-end-date">
                   <label for="inputEndDate">End Date</label>
-                  <input class="form-control" type="date" id="inputEndDate" name="inputEndDate"/>
+                  <input class="form-control" type="date" id="inputEndDate" name="inputEndDate" value="{{data.end_date}}"/>
                 </div>
                 <!-- End Of End Date -->
               </div>
               <div class="description">
                 <label for="inputDescription">Description</label>
-                <textarea class="form-control" id="inputDescription" cols="50" rows="10" name="inputDescription"></textarea>
+                <textarea class="form-control" id="inputDescription" cols="50" rows="10" name="inputDescription">{{data.description}}</textarea>
               </div>
               <div class="technologies">
                 <label>Technologies</label>

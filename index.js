@@ -34,8 +34,7 @@ app.get("/update-project/:id", formUpdate);
 
 // Post Routing
 app.post("/add-project", addProject);
-app.post("/updated-project/:id", updatedProject);
-
+app.post("/update-project/:id", updatedProject);
 // Local Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
@@ -133,40 +132,45 @@ async function deleteProject(req, res) {
 }
 
 // Update Project
-function formUpdate(req, res) {
-  const { id } = req.params;
+async function formUpdate(req, res) {
+  try {
+    const { id } = req.params;
+    const query = `SELECT *FROM tb_projects WHERE id=${id}`;
 
-  res.render("update-project", { data: dataProject[id] });
+    const obj = await sequelize.query(query, { type: QueryTypes.SELECT });
+
+    res.render("update-project", { data: obj[0] });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Processing Update
-function updatedProject(req, res) {
-  const { id } = req.params;
-  const projectIndex = dataProject.findIndex((project) => project.id === id);
-  const nameProject = req.body.inputProject;
-  const startDate = req.body.inputStartDate;
-  const endDate = req.body.inputEndDate;
-  const duration = distanceTime(startDate, endDate);
-  const description = req.body.inputDescription;
+async function updatedProject(req, res) {
+  try {
+    const { id } = req.params;
+    const nameProject = req.body.inputProject;
+    const startDate = req.body.inputStartDate;
+    const endDate = req.body.inputEndDate;
+    const duration = distanceTime(startDate, endDate);
+    const description = req.body.inputDescription;
+    const image = "image.png";
+    const nodejs = req.body.nodejs;
+    const golang = req.body.golang;
+    const reactjs = req.body.reactjs;
+    const javascript = req.body.javascript;
 
-  const nodejsChecked = req.body.nodejs === "on" ? node : "";
-  const golangChecked = req.body.golang === "on" ? golang : "";
-  const reactjsChecked = req.body.reactjs === "on" ? react : "";
-  const javascriptChecked = req.body.javascript === "on" ? javascript : "";
+    const nodejsCheck = nodejs ? true : false;
+    const golangCheck = golang ? true : false;
+    const reactjsCheck = reactjs ? true : false;
+    const javascriptCheck = javascript ? true : false;
 
-  const data = {
-    nameProject,
-    startDate,
-    endDate,
-    duration,
-    projectIndex,
-    description,
-    nodejs: nodejsChecked,
-    golang: golangChecked,
-    reactjs: reactjsChecked,
-    javascript: javascriptChecked,
-  };
+    await sequelize.query(`
+    UPDATE tb_projects SET name_project = '${nameProject}', start_date = '${startDate}', end_date='${endDate}', description='${description}', nodejs='${nodejsCheck}', golang='${golangCheck}', reactjs='${reactjsCheck}', javascript='${javascriptCheck}', image='${image}' WHERE id=${id}
+  `);
 
-  dataProject.push(data);
-  res.redirect("/");
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
 }
