@@ -149,12 +149,12 @@
     <hr />
     <section class="project-card">
       <h1>My Project</h1>
-      {{#if isLogin}}
+      {{#if isLogin}} 
       <div class="container-card" id="container-card">
         {{#each data}}
           <div class="card-project">
             <div class="image-project">
-              <img src="/image/blog-img.png" alt="image-project" />
+              <img src="{{this.image}}" alt="image-project" />
             </div>
             <div class="title-and-duration">
               <h3>

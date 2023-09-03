@@ -23,49 +23,70 @@
   </head>
   <body>
   <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-left d-flex mt-2">
-      <ul>
-        <li class="nav-item">
-          <a class="nav-brand" href="/">
-            <img src="/image/logo.png" alt="Logo" />
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/" class="nav-link item-collapse active">Home</a>
-        </li>
-        <li class="nav-item">
-          <a href="/add-project" class="nav-link item-collapse">Add Project</a>
-        </li>
-        <li class="nav-item">
-          <a href="/testimonial" class="nav-link item-collapse">Testimonial</a>
-        </li>
-      </ul>
-      <form class="nav-right nav-item item-collapse">
-        <a href="/contact" class="btn">Contact Me</a>
-      </form>
-    </div>
-    <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-  </nav>
+    <nav class="navbar">
+      <div class="nav-left d-flex mt-2">
+        <ul>
+          <li class="nav-item">
+            <a class="nav-brand" href="/">
+              <img src="/image/logo.png" alt="Logo" />
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link item-collapse active">Home</a>
+          </li>
+          {{#if isLogin}}
+            <li class="nav-item">
+              <a href="/add-project" class="nav-link item-collapse">Add Project</a>
+            </li>
+          {{/if}}
+          <li class="nav-item">
+            <a
+              href="/testimonial"
+              class="nav-link item-collapse"
+            >Testimonial</a>
+          </li>
+        </ul>
+        <form class="nav-right nav-item item-collapse">
+          <div class="login-register">
+            {{#if isLogin}}
+              <a href="#" class="nav-link text-success active">Hello,
+                {{user}}</a>
+              <a href="/logout">Logout</a>
+            {{else}}
+              <a href="/login" class="item-login item-collapse active">Login</a>
+              <a
+                href="/register"
+                class="item-register item-collapse"
+              >Register</a>
+            {{/if}}
+          </div>
+          <div class="contact">
+            <a href="/contact" class="btn btn-contact">Contact Me</a>
+          </div>
+        </form>
+      </div>
+      <button class="btn-barsMenu" id="btn-barsMenu" onclick="openHamburger()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </nav>
 
-  <div class="hamburger-nav-container" id="hamburger-nav-container">
-    <a href="/" class="hamburger-active">Home</a>
-    <a href="/add-project">Add Project</a>
-    <a href="/testimonial">Testimonial</a>
-    <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
-  </div>
-  <!-- End Of Navbar -->
+    <div class="hamburger-nav-container" id="hamburger-nav-container">
+      <a href="/" class="hamburger-active">Home</a>
+      <a href="/add-project">Add Project</a>
+      <a href="/testimonial">Testimonial</a>
+      <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
+    </div>
+    <!-- End Of Navbar -->
 
     <!-- Detail Project -->
-    <section>
+    <section enctype="multipart/form-data">
       <div class="container">
+        {{#each project}}
         <div class="detail-project">
-          <h1>{{project.name_project}}</h1>
+          <h1>{{this.name_project}}</h1>
           <div class="detail">
             <div class="left">
-              <img src="/image/blog-img.png" alt="image-project" />
+              <img src="{{this.image}}" alt="image-project" />
             </div>
             <div class="right">
               <div class="duration">
@@ -73,27 +94,35 @@
                 <div class="duration-content">
                   <div class="date">
                     <i class="fa-solid fa-calendar-days"> </i>
-                    <p>{{project.start_date}} - {{project.end_date}}</p>
+                    <p>{{this.start_date}} - {{this.end_date}}</p>
                   </div>
                   <div class="duration-time">
                     <i class="fa-regular fa-clock"> </i>
-                    <p>{{project.duration}}</p>
+                    <p>{{this.duration}}</p>
                   </div>
                 </div>
               </div>
               <div class="technologies">
                 <h4>Technologies</h4>
                 <div class="tech1">
+                  {{#if this.nodejs}}
                   <i class="fa-brands fa-node-js"> </i>
                   <p>Node Js</p>
+                  {{/if}}
+                  {{#if this.golang}}
                   <i class="fa-brands fa-golang"> </i>
                   <p>Golang</p>
+                  {{/if}}
                 </div>
                 <div class="tech2">
+                  {{#if this.reactjs}}
                   <i class="fa-brands fa-react"> </i>
                   <p>React Js</p>
+                  {{/if}}
+                  {{#if this.javascript}}
                   <i class="fa-brands fa-square-js"> </i>
                   <p>Javascript</p>
+                  {{/if}}
                 </div>
               </div>
             </div>
@@ -104,15 +133,16 @@
     <section>
       <div class="container-content">
         <p>
-          {{project.description}}
+          {{this.description}}
         </p>
         <p>
-          {{project.description}}
+          {{this.description}}
         </p>
         <p>
-          {{project.description}}
+          {{this.description}}
         </p>
       </div>
+        {{/each}}
     </section>
     <!-- End OF Detail Project -->
     <script src="Js/index.js"></script>

@@ -66,6 +66,14 @@
       <a href="/testimonial">Testimonial</a>
       <a href="/contact" class="btn-hamburger-contact">Contact Me</a>
     </div>
+
+    {{#if messages.danger}}
+      <div class="alert alert-danger" role="alert">
+        <div class="container">
+          {{messages.danger}}
+        </div>
+      </div>
+    {{/if}}
     <!-- End Of Navbar -->
     {{! Form Login }}
     <div class="container">

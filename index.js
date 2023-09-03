@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const bcrypt = require('bcrypt')
 const session  = require('express-session')
+const flash = require("express-flash");
 const { start } = require("repl");
 const PORT = 5000;
 
@@ -13,8 +14,7 @@ const sequelize = new Sequelize(config.development);
 
 // Local Module
 const distanceTime = require("./src/utils/count-duration.utils");
-const flash = require("express-flash");
-const { log } = require("console");
+const upload = require('./src/middlewares/uploadFile')
 
 // Setup call hbs with sub folder
 app.set("view engine", "hbs");
@@ -22,6 +22,7 @@ app.set("views", path.join(__dirname, "src/public/views"));
 
 // Set serving static file
 app.use(express.static("src/assets"));
+app.use(express.static("src/uploads"));
 
 // Set parsing
 app.use(express.urlencoded({ extended: false }));
@@ -57,10 +58,11 @@ app.get('/register', formRegister)
 app.get('/logout', logout)
 
 // Post Routing
-app.post("/add-project", addProject);
-app.post("/update-project/:id", updatedProject);
+app.post("/add-project", upload.single('inputImage'), addProject);
+app.post("/update-project/:id", upload.single('inputImage'), updatedProject);
 app.post('/login', login)
 app.post('/register', register)
+
 // Local Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
@@ -69,7 +71,9 @@ app.listen(PORT, () => {
 // Home
 async function home(req, res) {
   try {
-    const query = `SELECT id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image, duration FROM tb_projects`;
+    const query = `
+    SELECT tb_projects.id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image, duration, tb_users.name AS author FROM tb_projects LEFT JOIN tb_users ON tb_projects.author = tb_users.id ORDER BY tb_projects.id DESC 
+    `;
     let obj = await sequelize.query(query, { type: QueryTypes.SELECT });
 
     const data = obj.map((res) => ({
@@ -108,8 +112,9 @@ async function addProject(req, res) {
       javascript,
     } =req.body
 
-    const image = "image.png";
+    const image = req.file.filename;
     const duration = distanceTime(inputStartDate, inputEndDate);
+    const author = req.session.idUser
 
     // icon
     const nodejsCheck = nodejs ? true : false;
@@ -118,8 +123,8 @@ async function addProject(req, res) {
     const javascriptCheck = javascript ? true : false;
 
     const query = await sequelize.query(`
-  INSERT INTO tb_projects (name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image, duration)
-  VALUES ('${inputProject}', '${inputStartDate}', '${inputEndDate}', '${inputDescription}', '${nodejsCheck}', '${golangCheck}', '${reactjsCheck}', '${javascriptCheck}', '${image}', '${duration}')
+  INSERT INTO tb_projects (name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image, duration, author)
+  VALUES ('${inputProject}', '${inputStartDate}', '${inputEndDate}', '${inputDescription}', '${nodejsCheck}', '${golangCheck}', '${reactjsCheck}', '${javascriptCheck}', '${image}', '${duration}', '${author}')
 `);
 
     console.log(query); // Output the executed SQL query
@@ -151,13 +156,19 @@ async function detailProject(req, res) {
   try {
     const { id } = req.params;
 
-    const query = `SELECT id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image FROM "tb_projects" WHERE id=${id}`;
+    const query = `SELECT tb_projects.id, name_project, start_date, end_date, description, nodejs, golang, reactjs, javascript, image, tb_users.name AS author FROM "tb_projects" LEFT JOIN tb_users ON tb_projects.author = tb_users.id WHERE tb_projects.id=${id}`;
     const obj = await sequelize.query(query, { type: QueryTypes.SELECT });
 
+    const project = obj.map((res) => ({
+      ...res,
+      isLogin: req.session.isLogin,
+    }));
+
     res.render("detail-project", { 
-      project: obj[0],
+      project,
       isLogin: req.session.isLogin,
       user: req.session.user, 
+      idUser: req.session.idUser
     });
   } catch (error) {
     console.log(error);
@@ -181,7 +192,7 @@ async function deleteProject(req, res) {
 async function formUpdate(req, res) {
   try {
     const { id } = req.params;
-    const query = `SELECT *FROM tb_projects WHERE id=${id}`;
+    const query = `SELECT * FROM tb_projects WHERE id=${id}`;
 
     const obj = await sequelize.query(query, { type: QueryTypes.SELECT });
 
@@ -208,7 +219,7 @@ async function updatedProject(req, res) {
 
     const duration = distanceTime(inputStartDate, inputEndDate)
 
-    const image = 'imgae.png'
+    const image = req.file.filename
 
     const nodejsCheck = nodejs ? true : false;
     const golangCheck = golang ? true : false;
@@ -252,6 +263,7 @@ async function login(req, res) {
       return res.redirect('/login')
     } else {
       req.session.isLogin = true
+      req.session.idUser = obj[0].id
       req.session.user = obj[0].name
       req.flash('success', 'Login Berhasil!!!')
       res.redirect('/')
